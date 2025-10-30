@@ -26,9 +26,9 @@ public class App {
     }
 
     // force the user to choose between client/server
-    private static AppType chooseAppType() {
+    private static AppType chooseAppType(BufferedReader inputReader) {
         AppType appType = AppType.Unknown;
-        try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))) {
+        try {
             String input;
             while (appType == AppType.Unknown) {
                 System.out.print("(c)lient or (s)erver? ");
@@ -57,14 +57,15 @@ public class App {
         if (args.length >= 1) {
             appType = appTypeFromString(args[0]);
         }
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in));
         if (appType == AppType.Unknown) {
-            appType = chooseAppType();
+            appType = chooseAppType(inputReader);
         }
 
         if (appType == AppType.Client) {
-            Client.main(args);
+            Client.start(inputReader);
         } else if (appType == AppType.Server) {
-            Server.main(args);
+            Server.start();
         }
     }
 }

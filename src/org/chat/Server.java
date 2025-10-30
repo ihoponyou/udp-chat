@@ -11,7 +11,7 @@ public class Server {
         return ++messagesSent;
     }
 
-    public static void main(String[] args) {
+    public static void start() {
         byte[] receiveBuffer = new byte[App.MESSAGE_SIZE_BYTES];
         try (DatagramSocket serverSocket = new DatagramSocket(App.PORT)) {
             logger.log("started");
