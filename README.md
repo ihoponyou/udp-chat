@@ -6,9 +6,9 @@ If using an IDE, good luck. Otherwise, here is a guide for using Java's command-
 
 ### If using Windows, replace `.sh` with `.bat` in the following commands.
 
-First compile the project using `build.sh`:
+First compile the project:
 ```bash
-./build.sh
+./compile.sh
 ```
 
 Then execute the script without arguments to interactively choose to start a client/server:
@@ -29,4 +29,4 @@ Or start a client/server directly:
 ./run.sh server
 ```
 
-To disable logging, change `App.SHOW_LOGS` to false.
+To disable logging, change `App.SHOW_LOGS` to false and recompile.
