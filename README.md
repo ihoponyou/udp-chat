@@ -2,7 +2,7 @@
 - Java 21
 
 # Usage
-If using an IDE, good luck. Otherwise, here is a guide for using Java's command-line interface.
+If using an IDE, good luck. Otherwise, here is a guide for using the provided scripts.
 
 ### If using Windows, replace `.sh` with `.bat` in the following commands.
 
