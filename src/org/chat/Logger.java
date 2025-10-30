@@ -2,7 +2,7 @@ package org.chat;
 
 public class Logger {
     public static final String LOG_MESSAGE_FORMAT = "[%s]: %s";
-    public static final String ERROR_MESSAGE_FORMAT = "[%s] (ERROR): %s";
+    public static final String ERROR_MESSAGE_FORMAT = "[%s] (ERROR):";
     private String topic = "LOG";
 
     public Logger(String topic) {
@@ -22,10 +22,8 @@ public class Logger {
 
     public void logError(Exception e) {
         System.err.println(
-                ERROR_MESSAGE_FORMAT.formatted(
-                        this.topic,
-                        e.getClass(),
-                        e.getMessage()));
+                ERROR_MESSAGE_FORMAT.formatted(this.topic));
+        e.printStackTrace(System.err);
     }
 
     private String formatMessage(String message) {

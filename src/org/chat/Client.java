@@ -10,58 +10,57 @@ public class Client {
     private static Logger logger = new Logger("CLIENT");
 
     public static void main(String[] args) {
-        BufferedReader clientInput = new BufferedReader(new InputStreamReader(System.in));
         String input, message, reply;
-
         byte[] receiveBuffer = new byte[App.MESSAGE_SIZE_BYTES];
         byte[] sendBuffer = null;
-        try (DatagramSocket clientSocket = new DatagramSocket()) {
-            InetAddress serverAddress = InetAddress.getLocalHost();
+        try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))) {
+            try (DatagramSocket clientSocket = new DatagramSocket()) {
+                logger.log("started");
 
-            logger.log("started");
-            while (true) {
-                System.out.print("say something: ");
-                input = clientInput.readLine();
-                if (input == null) {
-                    System.out.print('\n');
-                    return;
+                InetAddress serverAddress = InetAddress.getLocalHost();
+                while (true) {
+                    System.out.println("say something:");
+                    input = inputReader.readLine();
+                    if (input == null) {
+                        System.out.print('\n');
+                        return;
+                    }
+                    if (input.isBlank()) {
+                        continue;
+                    }
+                    message = input + '\n';
+
+                    sendBuffer = message.getBytes();
+                    DatagramPacket outputPacket = new DatagramPacket(
+                            sendBuffer,
+                            sendBuffer.length,
+                            serverAddress,
+                            App.PORT);
+                    clientSocket.send(outputPacket);
+                    logger.log("sent \"%s\"", input);
+
+                    // don't wait for the server reply since we are exiting
+                    if (input.equalsIgnoreCase("exit")) {
+                        break;
+                    }
+
+                    DatagramPacket replyPacket = new DatagramPacket(receiveBuffer, App.MESSAGE_SIZE_BYTES);
+                    clientSocket.receive(replyPacket);
+                    reply = new String(replyPacket.getData());
+                    logger.log("received \"%s\"", App.stripIncludingNewlines(reply));
+                    System.out.print(reply);
                 }
-                if (input.isBlank()) {
-                    continue;
-                }
-                message = input + '\n';
 
-                sendBuffer = message.getBytes();
-                DatagramPacket outputPacket = new DatagramPacket(
-                        sendBuffer,
-                        sendBuffer.length,
-                        serverAddress,
-                        App.PORT);
-                clientSocket.send(outputPacket);
-                logger.log("sent \"%s\"", input);
-
-                // don't wait for the server reply since we are exiting
-                if (input.toLowerCase().equals("exit")) {
-                    break;
+                for (int i = SECONDS_TO_EXIT; i > 0; --i) {
+                    logger.log("exiting in %d", i);
+                    TimeUnit.SECONDS.sleep(1);
                 }
 
-                DatagramPacket replyPacket = new DatagramPacket(receiveBuffer, App.MESSAGE_SIZE_BYTES);
-                clientSocket.receive(replyPacket);
-                reply = new String(replyPacket.getData());
-                logger.log("received \"%s\"", App.stripIncludingNewlines(reply));
-                System.out.print(reply);
+                logger.log("done");
             }
-
-            for (int i = SECONDS_TO_EXIT; i > 0; --i) {
-                logger.log("exiting in %d", i);
-                TimeUnit.SECONDS.sleep(1);
-            }
-
-            logger.log("done");
-            // socket is closed automatically since
-            // it was created in a try-with-resources
         } catch (Exception e) {
             logger.logError(e);
         }
+
     }
 }

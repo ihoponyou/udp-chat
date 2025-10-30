@@ -23,7 +23,7 @@ public class Server {
                 Thread packetThread = new Thread(new PacketHandler(serverSocket, packet));
                 packetThread.start();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.logError(e);
         }
     }
