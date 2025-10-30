@@ -1,1 +1,2 @@
-java -classpath "build" "org.chat.App" %*
+@echo off
+java -classpath build org.chat.App %*

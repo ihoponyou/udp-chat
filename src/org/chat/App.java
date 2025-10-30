@@ -29,12 +29,21 @@ public class App {
     private static AppType chooseAppType() {
         AppType appType = AppType.Unknown;
         try (BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in))) {
+            String input;
             while (appType == AppType.Unknown) {
                 System.out.print("(c)lient or (s)erver? ");
-                appType = appTypeFromString(inputReader.readLine());
+                input = inputReader.readLine();
+                if (input == null) {
+                    System.out.print('\n');
+                    break;
+                }
+                if (input.isBlank()) {
+                    continue;
+                }
+                appType = appTypeFromString(input);
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println(Logger.ERROR_MESSAGE_FORMAT.formatted("APP/MAIN", e.getMessage()));
         }
         return appType;
     }
@@ -51,7 +60,6 @@ public class App {
         if (appType == AppType.Unknown) {
             appType = chooseAppType();
         }
-        // System.out.println(String.format("you chose %s", appType));
 
         if (appType == AppType.Client) {
             Client.main(args);

@@ -22,6 +22,13 @@ public class Client {
             while (true) {
                 System.out.print("say something: ");
                 input = clientInput.readLine();
+                if (input == null) {
+                    System.out.print('\n');
+                    return;
+                }
+                if (input.isBlank()) {
+                    continue;
+                }
                 message = input + '\n';
 
                 sendBuffer = message.getBytes();
@@ -54,7 +61,7 @@ public class Client {
             // socket is closed automatically since
             // it was created in a try-with-resources
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            logger.logError(e);
         }
     }
 }

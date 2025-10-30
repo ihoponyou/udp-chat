@@ -47,7 +47,7 @@ public class PacketHandler implements Runnable {
 
             logger.log("done");
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            this.logger.logError(e);
         }
     }
 }

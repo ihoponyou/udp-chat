@@ -1,4 +1,3 @@
 @echo off
-del /q/s "build"
-mkdir build
-javac -sourcepath "src" -d "build" "src/org/chat/*.java"
+if exist .\build\ (@rd /s /q .\build) else (@mkdir build)
+javac -sourcepath src -d build src/org/chat/*.java

@@ -24,7 +24,7 @@ public class Server {
                 packetThread.start();
             }
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            logger.logError(e);
         }
     }
 }

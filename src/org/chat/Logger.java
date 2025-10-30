@@ -1,8 +1,8 @@
 package org.chat;
 
 public class Logger {
-    private static final String LOG_MESSAGE_FORMAT = "[%s]: %s";
-    private static final String ERROR_MESSAGE_FORMAT = "[%s] (line %d): %s";
+    public static final String LOG_MESSAGE_FORMAT = "[%s]: %s";
+    public static final String ERROR_MESSAGE_FORMAT = "[%s] (ERROR): %s";
     private String topic = "LOG";
 
     public Logger(String topic) {
@@ -24,7 +24,7 @@ public class Logger {
         System.err.println(
                 ERROR_MESSAGE_FORMAT.formatted(
                         this.topic,
-                        e.getStackTrace()[0].getLineNumber(),
+                        e.getClass(),
                         e.getMessage()));
     }
 
